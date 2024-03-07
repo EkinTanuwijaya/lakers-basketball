@@ -9,7 +9,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: '',
-    database: "mytutor"
+    database: "lakers"
 })
 
 
@@ -17,8 +17,17 @@ app.get('/',(re,res)=>{
     return res.json("from backend");
 })
 
-app.get('/mytutor',(req,res)=>{
-    const sql = "Select * from categories"
+app.get('/match',(req,res)=>{
+    const sql = "SELECT date, t.team_name as homename, homescore, awayscore, te.team_name as awayname \
+    FROM `match` m join team t on m.home = t.id join team te on m.away = te.id;"
+    db.query(sql,(err,data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
+
+app.get('/player',(req,res)=>{
+    const sql = "SELECT * FROM `player` p join position po on p.position = po.positionID"
     db.query(sql,(err,data)=>{
         if(err) return res.json(err)
         return res.json(data)
