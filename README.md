@@ -1,4 +1,32 @@
-# Getting Started with Create React App
+Step to run the project:
+- open xampp (Apache + MySQL)
+- create database named lakers
+- import file lakers.sql
+- open 2 terminals (vscode)
+- 1 terminal : cd backend -> npm start (for database)
+- 1 terminal : npm start (for web app)
+
+Page :
+- Header:
+    ![alt text](image.png)
+- Sidenav:
+    ![alt text](image-1.png)
+- Footer
+    ![alt text](image-2.png)
+- Home Page
+    -> Linechart ![alt text](image-3.png)
+        -> dataZoom
+    -> Table ![alt text](image-4.png)
+        -> can filter by date using rangepicker
+        -> sort asc & desc date
+        -> can filter Tags (win , lose , draw)
+    -> Piechart & Card ![alt text](image-5.png)
+- Player List 
+    -> Card ![alt text](image-6.png)
+        -> hover the card and it will show the player's backnumber
+        -> can click 1 card and it will show the player's stats detail ![alt text](image-7.png) and the selected card will have border ![alt text](image-8.png)
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -44,3 +72,4 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+ -->
