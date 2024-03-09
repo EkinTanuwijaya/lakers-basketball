@@ -1,42 +1,29 @@
 import axios from 'axios';
 import CardTemplate from '../../Template/Card';
 import { useEffect, useState } from 'react';
-import arrowIcon from './../../../assets/arrow-down.png'
+import basketballIcon from './../../../assets/Basketball.png'
 
-
-const TotalMatchCard = () => {
+interface TotalMatchCardInterface{
+  selectedRange:any;
+}
+const TotalMatchCard = ({selectedRange}:TotalMatchCardInterface) => {
   const [data,setData] = useState<string>();
   useEffect(()=>{
-      axios.get('http://localhost:8081/match')
-      .then(res => {
-          let lowPoint = 0
-          let teamName
-
-          res.data.map((dt:any) => {
-              if(dt.homename == "Lakers"){
-                  if(dt.homescore < dt.awayscore ){
-                    teamName = dt.awayname
-                    lowPoint = dt.homescore
-                  }
-              }
-              
-              if(dt.awayname == "Lakers"){
-                  if(dt.awayscore < dt.homescore){
-                    teamName = dt.homename
-                    lowPoint = dt.awayscore
-                  }
-              }
-          })
-          
-          setData('against ' + teamName + " ( " + lowPoint + " points )");
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-    },[])
+    const params = {
+      startDate : selectedRange[0],
+      endDate : selectedRange[1]
+    }
+    axios.get('http://localhost:8081/matchplayed',{params})
+    .then(res => {
+        setData(res.data[0].count + (res.data[0].count > 1 ? " Matches" : " Match"));
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  },[selectedRange])
   return (
     <>
-    <CardTemplate title={"Total Match Played"} description={data} avatar={arrowIcon}/>
+    <CardTemplate title={"Total Match Played"} description={data} avatar={basketballIcon}/>
     </>
   );
 };

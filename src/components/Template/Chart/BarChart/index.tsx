@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 
 type EChartsOption = echarts.EChartsOption;
-interface LineChartInterface{
+interface BarChartInterface{
     metaData : any;
     title: string;
 }
-const LineChart = ({metaData,title}:LineChartInterface) => {
+const BarChart = ({metaData,title}:BarChartInterface) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,9 +17,8 @@ const LineChart = ({metaData,title}:LineChartInterface) => {
         xAxis: metaData.xAxis,
         yAxis: metaData.yAxis,
         series: [{
-            data:metaData.series[0].data,
-            name:metaData.series[0].name,
-            type:"line"
+            data: [...metaData.series[0].data],
+            type: 'bar'
         }],
         title:{
           text: title,
@@ -32,10 +31,10 @@ const LineChart = ({metaData,title}:LineChartInterface) => {
         tooltip: {
           trigger: 'axis'
         },
-        dataZoom: metaData.dataZoom,
-        color:"#4a2381",
+        color:'#4a2381',
+        label: metaData.label
       };
-
+   
       myChart.setOption(option);
 
       return () => {
@@ -44,7 +43,7 @@ const LineChart = ({metaData,title}:LineChartInterface) => {
     }
   }, [metaData,title]);
 
-  return <div ref={chartRef} style={{ height: '400px' , width:'1200px'}} />;
+  return <div ref={chartRef} style={{ height: '400px' , width:'500px' , bottom:0}} />;
 };
 
-export default LineChart;
+export default BarChart;

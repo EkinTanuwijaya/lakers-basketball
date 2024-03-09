@@ -1,41 +1,47 @@
 import axios from 'axios';
 import CardTemplate from '../../Template/Card';
 import { useEffect, useState } from 'react';
-import arrowIcon from './../../../assets/arrow-up.png'
-
-const FrequentlyOpponentCard = () => {
+import opponentIcon from './../../../assets/Opponent.png'
+interface FrequentlyOpponentCardInterface{
+  selectedRange:any;
+}
+const FrequentlyOpponentCard = ({selectedRange}:FrequentlyOpponentCardInterface) => {
   const [data,setData] = useState<string>();
   useEffect(()=>{
-      axios.get('http://localhost:8081/match')
-      .then(res => {
-          let highPoint = 1000
-          let teamName
-
-          res.data.map((dt:any) => {
-              if(dt.homename == "Lakers"){
-                  if(dt.homescore > dt.awayscore ){
-                    teamName = dt.awayname
-                    highPoint = dt.homescore
-                  }
-              }
-              
-              if(dt.awayname == "Lakers"){
-                  if(dt.awayscore > dt.homescore){
-                    teamName = dt.homename
-                    highPoint = dt.awayscore
-                  }
-              }
-          })
-          
-          setData('against ' + teamName + " ( " + highPoint + " points )");
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-    },[])
+    const params = {
+      startDate : selectedRange[0],
+      endDate : selectedRange[1]
+    }
+    axios.get('http://localhost:8081/match',{params})
+    .then(res => {
+        let team:any = {}
+        res.data.map((dt:any) => {
+            if(dt.homename == "Lakers"){
+              team[dt.awayname] = (team[dt.awayname] || 0) + 1;
+            }
+            
+            if(dt.awayname == "Lakers"){
+              team[dt.homename] = (team[dt.homename] || 0) + 1;
+            }
+        })
+       let maxCount = 0;
+       let maxTeam = "";
+       const keys = Object.keys(team);
+       keys.forEach((key) => {
+          if(maxCount < team[key]){
+            maxCount = team[key]
+            maxTeam = key
+          }
+        });
+        setData(maxTeam + (" (" + maxCount + " Matches)"));
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  },[selectedRange])
   return (
     <>
-    <CardTemplate title={"Most Frequently Opponent"} description={data} avatar={arrowIcon}/>
+    <CardTemplate title={"Most Frequently Opponent"} description={data} avatar={opponentIcon}/>
     </>
   );
 };

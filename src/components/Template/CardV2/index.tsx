@@ -34,16 +34,17 @@ const CardTemplateV2 = (
     const handleMouseClick = () =>{
         setId(id);
         if(currentId == id || currentId == -1){
-            if(currentId == -1){
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            // if(currentId == -1){
+            //   window.scrollTo({ top: 0, behavior: 'smooth' });
+            // }
             setShow(!show);
         }else{
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // window.scrollTo({ top: 0, behavior: 'smooth' });
             if(show == false){
                 setShow(!show);
             }
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
       
       const numberStyle: React.CSSProperties = {  
@@ -65,12 +66,14 @@ const CardTemplateV2 = (
             onClick={handleMouseClick}>
             <Card
                 style={{ opacity: numberVisible ? 0.07 : 1
-                    , backgroundColor:numberVisible ? 'rgb(252, 185, 34)' : 'white'
-                        ,border: currentId == id ? show?'1px solid #000000':'none' :'none'}}
-                cover={<img alt="example" src={avatar} style={{ width: "300px"}}/>}
-                
+                    , backgroundColor:'rgb(252, 185, 34)'
+                        ,border: currentId == id ? show ?'2px solid #4a2381':'none' :'none'
+                            ,boxShadow: currentId == id ? show ? '0 0 20px #4a2381':'none' :'none'
+                                ,display:"flex" , justifyContent:"center" , flexDirection:"column"}}
+              
             >
-                <Meta title={title} description={description} />
+                <img alt="example" src={avatar} style={{ width: "275px", marginBottom:"20px"}}/>
+                <Meta title={<span style={{ color: '#4a2381' }}>{title}</span>} description={<span style={{ color: '#4a2381' }}>{description}</span>} />
             </Card>
             <div style={{ ...numberStyle, opacity: numberVisible ? 1 : 0}}>{number}</div>
         </a>

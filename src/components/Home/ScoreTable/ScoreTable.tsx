@@ -2,10 +2,15 @@ import { Card, Tag } from 'antd';
 import TableTemplate from '../../Template/Table';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
+import './../../../index.css'
 
-const ScoreTable = () => {
+interface ScoreTableInterface{
+  selectedRange:any;
+}
+const ScoreTable = ({selectedRange}:ScoreTableInterface) => {
+    
     const [data,setData] = useState([]);
-
     const scoreTableColumns = [
         {
           title: 'Date',
@@ -15,31 +20,17 @@ const ScoreTable = () => {
                     if (a['date'] < b['date']) return -1;
                     if (a['date'] > b['date']) return 1;
                     return 0;
-                  } 
-    
+                  },
         },
         {
           title: 'Home',
           dataIndex: 'home',
           key: 'home',
-          // render: (text) => <a>{text}</a>,
         },
         {
           title: 'Score',
           dataIndex: 'score',
           key: 'score',
-          // children: [
-          //     {
-          //       title: '',
-          //       dataIndex: 'homescore',
-          //       key: 'homescore',
-          //     },
-          //     {
-          //       title: '',
-          //       dataIndex: 'awayscore',
-          //       key: 'awayscore',
-          //     },
-          //   ],
         },
         {
           title: 'Away',
@@ -77,7 +68,12 @@ const ScoreTable = () => {
       ];
       
       useEffect(()=>{
-        axios.get('http://localhost:8081/match')
+        const params = {
+          startDate : selectedRange[0],
+          endDate : selectedRange[1]
+        }
+        console.log(params,"param")
+        axios.get('http://localhost:8081/match', {params})
         .then(res => {
             let parsedData = []
 
@@ -90,7 +86,7 @@ const ScoreTable = () => {
                     final = dt.awayscore > dt.homescore ? "Win" : dt.awayscore == dt.homescore ? "Draw" : "Lose"
                 }
                 return{
-                    date: dt.date,
+                    date: moment(dt.date).format('YYYY-MM-DD'),
                     home: dt.homename,
                     score: dt.homescore + ' - ' + dt.awayscore,
                     away: dt.awayname,
@@ -103,7 +99,7 @@ const ScoreTable = () => {
         .catch(error => {
           console.error('Error fetching data:', error);
         });
-      },[])
+      },[selectedRange])
    
     return (
         <Card loading={false} >

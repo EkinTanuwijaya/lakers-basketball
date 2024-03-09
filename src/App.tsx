@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  DesktopOutlined,
+  TeamOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
 import {  Layout, Menu } from 'antd';
@@ -25,18 +25,20 @@ const App: React.FC = () => {
   return (
     <>
       {/* <Router> */}
-        <Header style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+        <Header style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between', backgroundColor:'rgb(252, 185, 34)'}}>
           <img src={LakersLogo} alt="Logo" style={{ width: '100px' }}/>
-          <img src={LakersWord} alt="Logo"style={{ width: '500px' }}/>
+          <img src={LakersWord} alt="Logo"style={{ width: '180px' }}/>
         </Header>
         <Layout style={{ minHeight: '100vh' }}>
-          <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} >
-            <div className="demo-logo-vertical" />
-            <Menu theme="dark"  mode="inline"  selectedKeys={[selectedKey]}>
-                <Menu.Item key="/" icon={<PieChartOutlined />}>
+          <Sider theme='light' collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}  style={{ backgroundColor:'#4a2381'}}
+            trigger={<div style={{ backgroundColor:"#4a2381",color: 'rgb(252, 185, 34)', fontSize: '20px', textAlign: 'center' }}>{collapsed ? '>' : '<'}</div>}
+          >
+            <div className="demo-logo-vertical" style={{ backgroundColor:'white' }}/>
+            <Menu theme="light"  mode="inline"  selectedKeys={[selectedKey]} style={{ backgroundColor:"#4a2381" }}> 
+                <Menu.Item key="/" icon={<PieChartOutlined />} style={{ backgroundColor : selectedKey == "/"? "rgb(252, 185, 34)" : '#4a2381', color : selectedKey == "/"? "#4a2381":'white' }}>
                   <Link to="/">Home</Link>
                 </Menu.Item>
-                <Menu.Item key="/PlayerList" icon={<DesktopOutlined />}>
+                <Menu.Item key="/PlayerList" icon={<TeamOutlined /> }style={{ backgroundColor : selectedKey == "/PlayerList"? "rgb(252, 185, 34)" : '#4a2381' , color : selectedKey == "/PlayerList"? "#4a2381":'white'}}>
                   <Link to="/PlayerList">Player List</Link>
                 </Menu.Item>
             </Menu>
@@ -48,7 +50,7 @@ const App: React.FC = () => {
                 <Route path="/PlayerList" element = {<PlayerList/>}/>
               </Routes>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>
+            <Footer style={{ textAlign: 'center' , color:'#4a2381'}}>
               Lakers ©{new Date().getFullYear()} Created by Ekin Tanuwijaya
             </Footer>
           </Layout>

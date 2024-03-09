@@ -3,37 +3,40 @@ import CardTemplate from '../../Template/Card';
 import { useEffect, useState } from 'react';
 import arrowIcon from './../../../assets/arrow-down.png'
 
-
-const LowestCard = () => {
+interface LowestCardInterface{
+  selectedRange:any;
+}
+const LowestCard = ({selectedRange}:LowestCardInterface) => {
   const [data,setData] = useState<string>();
   useEffect(()=>{
-      axios.get('http://localhost:8081/match')
-      .then(res => {
-          let lowPoint = 0
-          let teamName
+  const params = {
+    startDate : selectedRange[0],
+    endDate : selectedRange[1]
+  }
+    axios.get('http://localhost:8081/match',{params})
+    .then(res => {
+        let lowPoint = 1000
 
-          res.data.map((dt:any) => {
-              if(dt.homename == "Lakers"){
-                  if(dt.homescore < dt.awayscore ){
-                    teamName = dt.awayname
-                    lowPoint = dt.homescore
-                  }
-              }
-              
-              if(dt.awayname == "Lakers"){
-                  if(dt.awayscore < dt.homescore){
-                    teamName = dt.homename
-                    lowPoint = dt.awayscore
-                  }
-              }
-          })
-          
-          setData('against ' + teamName + " ( " + lowPoint + " points )");
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-    },[])
+        res.data.map((dt:any) => {
+            if(dt.homename == "Lakers"){
+                if(dt.homescore < lowPoint ){
+                  lowPoint = dt.homescore
+                }
+            }
+            
+            if(dt.awayname == "Lakers"){
+                if(dt.awayscore < lowPoint){
+                  lowPoint = dt.awayscore
+                }
+            }
+        })
+        
+        setData(('' + (lowPoint == 1000 ? "-" : lowPoint) + " Points"));
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  },[selectedRange])
   return (
     <>
     <CardTemplate title={"Most Lowest Scored Point"} description={data} avatar={arrowIcon}/>

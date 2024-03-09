@@ -21,8 +21,8 @@ import image16 from '../../../assets/16.png'
 import image17 from '../../../assets/17.png'
 import image18 from '../../../assets/18.png'
 import image19 from '../../../assets/19.png'
-import Card from "antd/es/card/Card";
-
+import './../../../index.css'
+import PlayerDetailCard from "./PlayerDetailCard";
 
 
 const PlayerListCard = () => {
@@ -42,50 +42,16 @@ const PlayerListCard = () => {
         });
     },[show,id])
   return (
-    <>
-        <h1 style={{ display: show? 'flex' : 'none' , justifyContent:'center'}}>2023 - 2024 Season Stats</h1>     
-
-        <Row gutter={[20,20]} style={{ marginTop:'10px' }}>
-            <Col span={24} style={{ display: show? 'flex' : 'none' , justifyContent:'center'}}>
-                <Card>
-                    <h1 style={{ display:"flex", justifyContent:"center"}}>{id != -1 ? data[id-1].name : null}</h1>     
-                    <img alt="example" src={image[id-1]} style={{ width: "300px"}}/>
-                    <h1 style={{ display:"flex", justifyContent:"center"}}>{id != -1 ? "#"+data[id-1].backnumber: null}</h1>     
-                </Card> 
-            </Col>
-        </Row>
-        <Row gutter={[20,20]} style={{ marginTop:'10px' }}>
-            <Col span={6} style={{ display: show? 'flex' : 'none' }}>
-                <Card>
-                    <h2 style={{ display:"flex", justifyContent:"center"}}>Position</h2>     
-                    <h2 style={{ display:"flex", justifyContent:"center",width: "270px"}}>{id != -1 ? data[id-1].positionName + " ("+ data[id-1].positionID + ")": null}</h2>     
-                </Card>  
-            </Col>
-            <Col span={6} style={{ display: show? 'flex' : 'none' }}>
-                <Card>
-                    <h2 style={{ display:"flex", justifyContent:"center"}}>Points</h2>     
-                    <h1 style={{ display:"flex", justifyContent:"center",width: "270px"}}>{id != -1 ? data[id-1].points:null}</h1>     
-                </Card>  
-            </Col>
-            <Col span={6} style={{ display: show? 'flex' : 'none' }}>
-                <Card>
-                    <h2 style={{ display:"flex", justifyContent:"center"}}>Rebound</h2>     
-                    <h1 style={{ display:"flex", justifyContent:"center",width: "270px"}}>{id != -1 ? data[id-1].rebound : null}</h1>     
-
-                </Card>  
-            </Col>
-            <Col span={6} style={{ display: show? 'flex' : 'none' }}>
-                <Card>
-                    <h2 style={{ display:"flex", justifyContent:"center"}}>Assist</h2>     
-                    <h1 style={{ display:"flex", justifyContent:"center",width: "270px"}}>{id != -1 ? data[id-1].assist:null}</h1>     
-
-                </Card>  
+    <div className="backgroundLogo">
+        <Row gutter={[20,20]} style={{ marginTop:'10px' , display: show? 'flex' : 'none' }}>
+            <Col span={24}>
+                <PlayerDetailCard show={show} id={id} data={data}/>
             </Col>
         </Row>
     
         <Row gutter={[20,20]} style={{ marginTop:'10px' }}>
         <Col span={24}>
-            <h1 style={{ display:"flex", justifyContent:"center"}}>Player List</h1>     
+            <h1 style={{ display:"flex", justifyContent:"center", color:"#4a2381"}}>Player List</h1>     
         </Col>
         {data.map((dt:any,index:number)=>{
             return(
@@ -107,7 +73,7 @@ const PlayerListCard = () => {
         </Row>
         
         
-    </>
+    </div>
   );
 };
 

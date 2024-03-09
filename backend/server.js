@@ -18,14 +18,35 @@ app.get('/',(re,res)=>{
 })
 
 app.get('/match',(req,res)=>{
-    const sql = "SELECT date, t.team_name as homename, homescore, awayscore, te.team_name as awayname \
-    FROM `match` m join team t on m.home = t.id join team te on m.away = te.id;"
+    let startDate = req.query.startDate;
+    let endDate = req.query.endDate;
+    let whereQuery = "where True";
+    if(startDate){
+        whereQuery = " and m.`date` between '" +startDate + "' AND '" + endDate + "'";
+    }
+    // return res.json(whereQuery)
+    const sql = "SELECT cast(`date` as date) as date, t.team_name as homename, homescore, awayscore, te.team_name as awayname \
+    FROM `match` m join team t on m.home = t.id join team te on m.away = te.id " +whereQuery
     db.query(sql,(err,data)=>{
         if(err) return res.json(err)
         return res.json(data)
     })
 })
-
+app.get('/matchplayed',(req,res)=>{
+    let startDate = req.query.startDate;
+    let endDate = req.query.endDate;
+    let whereQuery = "where True";
+    if(startDate){
+        whereQuery = " and m.`date` between '" +startDate + "' AND '" + endDate + "'";
+    }
+    // return res.json(whereQuery)
+    const sql = "SELECT count(*) as count \
+    FROM `match` m join team t on m.home = t.id join team te on m.away = te.id " +whereQuery
+    db.query(sql,(err,data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
 app.get('/player',(req,res)=>{
     const sql = "SELECT * FROM `player` p join position po on p.position = po.positionID"
     db.query(sql,(err,data)=>{

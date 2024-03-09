@@ -1,42 +1,41 @@
 import axios from 'axios';
 import CardTemplate from '../../Template/Card';
 import { useEffect, useState } from 'react';
-import arrowIcon from './../../../assets/arrow-down.png'
+import scoreIcon from './../../../assets/Score.png'
 
-
-const TotalMatchCard = () => {
+interface TotalPointCardInterface{
+  selectedRange:any;
+}
+const TotalMatchCard = ({selectedRange}:TotalPointCardInterface) => {
   const [data,setData] = useState<string>();
   useEffect(()=>{
-      axios.get('http://localhost:8081/match')
-      .then(res => {
-          let lowPoint = 0
-          let teamName
+    const params = {
+      startDate : selectedRange[0],
+      endDate : selectedRange[1]
+    }
+    axios.get('http://localhost:8081/match',{params})
+    .then(res => {
+        let totalPoint = 0
 
-          res.data.map((dt:any) => {
-              if(dt.homename == "Lakers"){
-                  if(dt.homescore < dt.awayscore ){
-                    teamName = dt.awayname
-                    lowPoint = dt.homescore
-                  }
-              }
-              
-              if(dt.awayname == "Lakers"){
-                  if(dt.awayscore < dt.homescore){
-                    teamName = dt.homename
-                    lowPoint = dt.awayscore
-                  }
-              }
-          })
-          
-          setData('against ' + teamName + " ( " + lowPoint + " points )");
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-    },[])
+        res.data.map((dt:any) => {
+            if(dt.homename == "Lakers"){
+                totalPoint += dt.homescore
+            }
+            
+            if(dt.awayname == "Lakers"){
+                totalPoint += dt.awayscore
+            }
+        })
+        
+        setData( totalPoint + (totalPoint > 1 ? " Points" : " Point"));
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  },[selectedRange])
   return (
     <>
-    <CardTemplate title={"Total Point Scored"} description={data} avatar={arrowIcon}/>
+    <CardTemplate title={"Total Point Scored"} description={data} avatar={scoreIcon}/>
     </>
   );
 };
