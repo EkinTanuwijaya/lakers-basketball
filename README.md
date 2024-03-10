@@ -4,7 +4,7 @@ Step to run the project:
 - import file lakers.sql
 - open 2 terminals (vscode)
 - 1 terminal : cd backend -> npm start (for database)
-- 1 terminal : npm start (for web app)
+- 1 terminal : npm install (if not installed) -> npm start (for web app)
 
 Page :
 - Header:
