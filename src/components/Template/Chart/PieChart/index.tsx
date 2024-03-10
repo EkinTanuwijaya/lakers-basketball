@@ -28,7 +28,7 @@ const PieChart = ({metaData,data}:PieChartInterface) => {
         myChart.dispose(); // Dispose the chart instance when the component unmounts
       };
     }
-  }, [data]);
+  }, [data, metaData.title, metaData.series]);
 
   return <div ref={chartRef} style={{ height: '400px' }} />;
 };
