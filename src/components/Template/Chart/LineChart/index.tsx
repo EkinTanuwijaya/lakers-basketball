@@ -39,7 +39,7 @@ const LineChart = ({metaData,title}:LineChartInterface) => {
       myChart.setOption(option);
 
       return () => {
-        myChart.dispose(); // Dispose the chart instance when the component unmounts
+        myChart.dispose(); 
       };
     }
   }, [metaData,title]);
