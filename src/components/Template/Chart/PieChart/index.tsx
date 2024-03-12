@@ -25,7 +25,7 @@ const PieChart = ({metaData,data}:PieChartInterface) => {
       myChart.setOption(option);
 
       return () => {
-        myChart.dispose(); // Dispose the chart instance when the component unmounts
+        myChart.dispose(); 
       };
     }
   }, [data, metaData.title, metaData.series]);
